@@ -193,7 +193,7 @@ step "deploy-azure-web-app" {
             Octopus.Action.Package.DownloadOnTentacle = "False"
             Octopus.Action.Package.FeedId = "octopus-server-built-in"
             Octopus.Action.Package.JsonConfigurationVariablesTargets = "appsettings.json"
-            Octopus.Action.Package.PackageId = "RandomQuote"
+            Octopus.Action.Package.PackageId = "RandomQuotes"
             OctopusUseBundledTooling = "True"
         }
         worker_pool_variable = "RandomQuotes.WorkerPool"
@@ -201,7 +201,7 @@ step "deploy-azure-web-app" {
         packages {
             acquisition_location = "Server"
             feed = "octopus-server-built-in"
-            package_id = "RandomQuote"
+            package_id = "RandomQuotes"
             properties = {
                 SelectionMode = "immediate"
             }
