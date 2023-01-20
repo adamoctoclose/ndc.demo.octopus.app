@@ -1,24 +1,3 @@
-step "approve-production-deployment" {
-    condition = "Variable"
-    name = "Approve Production Deployment"
-    properties = {
-        Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Trigger.Id}True#{/unless}"
-    }
-
-    action {
-        action_type = "Octopus.Manual"
-        environments = ["production"]
-        is_required = true
-        notes = "Require approval from someone with the appropriate permissions."
-        properties = {
-            Octopus.Action.Manual.BlockConcurrentDeployments = "True"
-            Octopus.Action.Manual.Instructions = "Please add approval notes here."
-            Octopus.Action.RunOnServer = "false"
-        }
-        worker_pool_variable = ""
-    }
-}
-
 step "create-web-app-service" {
     name = "Create Web App service"
     properties = {
@@ -134,6 +113,27 @@ step "send-completion-notification" {
             Octopus.Action.Email.IsHtml = "True"
             Octopus.Action.Email.Subject = "Release #{Octopus.Release.Number} has been deployed to #{Octopus.Environment.Name}"
             Octopus.Action.Email.To = "#{Octopus.Deployment.CreatedBy.EmailAddress}"
+            Octopus.Action.RunOnServer = "false"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "approve-production-deployment" {
+    condition = "Variable"
+    name = "Approve Testing Acceptance"
+    properties = {
+        Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Trigger.Id}True#{/unless}"
+    }
+
+    action {
+        action_type = "Octopus.Manual"
+        environments = ["test"]
+        is_required = true
+        notes = "Require approval from someone with the appropriate permissions."
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "True"
+            Octopus.Action.Manual.Instructions = "Please add approval notes here."
             Octopus.Action.RunOnServer = "false"
         }
         worker_pool_variable = ""
