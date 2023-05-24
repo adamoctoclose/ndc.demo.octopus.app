@@ -198,7 +198,12 @@ step "deploy-trading-site" {
                 $ipConfig = "ipconfig1"
                 $nic = $OctopusParameters["OctoFX.VM.Nic"]
                 
-                az network nic ip-config address-pool add -g $resourceGroup --lb-name $loadBalancer --address-pool $addressPool --ip-config-name $ipConfig --nic-name $nic
+                try {
+                	az network nic ip-config address-pool add -g $resourceGroup --lb-name $loadBalancer --address-pool $addressPool --ip-config-name $ipConfig --nic-name $nic
+                }
+                catch {
+                	Write-Warning "Failed to add VM/IP address to load balancer"
+                }    
                 EOT
             Octopus.Action.Script.ScriptSource = "Inline"
             Octopus.Action.Script.Syntax = "PowerShell"
